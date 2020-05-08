@@ -1,0 +1,39 @@
+name: Build and scan
+
+on:
+  push:
+    branches: 
+      - develop
+      
+jobs:
+  buildAndScan:
+    
+    runs-on: windows-latest
+    env:
+      token: ${{ secrets.sonar_key }}
+      pk: ${{ secrets.sonar_projectKey }}
+      domain: ${{ secrets.sonar_domain }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.103
+    - name: Install dependencies
+      run: dotnet restore --use-lock-file
+    - name: Install sonarqube
+      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Begin scan
+      shell: powershell
+      run: dotnet sonarscanner begin /k:"$env:pk" /d:sonar.host.url="$env:domain" /d:sonar.login="$env:token" /d:sonar.exclusions="swharden\Spectrogram\Colormaps\*"
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: End scan
+      shell: powershell
+      run: dotnet sonarscanner end /d:sonar.login="$env:token"
