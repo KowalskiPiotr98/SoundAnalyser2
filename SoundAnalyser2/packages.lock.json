@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v3.1": {
+      "MathNet.Numerics": {
+        "type": "Direct",
+        "requested": "[4.9.1, )",
+        "resolved": "4.9.1",
+        "contentHash": "tLg/nvtdYd830Ee8nWsrsIiBTxeKmUEtsrQIPX4Sn60l7eMmZFIvSaMdG6o08FGsByi0TArJ6tx8LVT4vpWqyQ=="
+      },
       "Microsoft.CodeAnalysis.FxCopAnalyzers": {
         "type": "Direct",
         "requested": "[3.0.0, )",
@@ -32,6 +38,15 @@
         "dependencies": {
           "System.Drawing.Common": "4.7.0",
           "runtime.osx.10.10-x64.CoreCompat.System.Drawing": "5.8.64"
+        }
+      },
+      "ScottPlot.WPF": {
+        "type": "Direct",
+        "requested": "[4.0.31, )",
+        "resolved": "4.0.31",
+        "contentHash": "HMlxbBnELPLSswAMmKI6vTypKdmk6uvE9G74GK8TaCgiWfjkzpRbxbfij9mlolGqWb297OH9KC2ImebbAy9mKA==",
+        "dependencies": {
+          "ScottPlot": "4.0.31"
         }
       },
       "Microsoft.CodeAnalysis.VersionCheckAnalyzer": {

@@ -3,10 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:SoundAnalyser2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Sound Analyser 2" Height="1000" Width="830" MinWidth="880" MinHeight="800">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="menu">
+            <MenuItem Header="File">
+                <MenuItem Header="Load WAV" Name="LoadWAV" Click="LoadWAV_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help" Name="HelpMenu" Click="HelpMenu_Click"/>
+            </MenuItem>
+        </Menu>
+        <ScottPlot:WpfPlot Margin="10,10,10,10" x:Name="SignalTimePlot" Grid.Row="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Frame length [samples]:"/>
+            <TextBox x:Name="FrameLength" Margin="2,10,0,10" Width="50" Text="256" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+            <Button x:Name="Refresh" Content="Refresh" Margin="10,10,0,10" VerticalAlignment="Center" VerticalContentAlignment="Center" Click="Refresh_Click"/>
+        </StackPanel>
+        <TabControl Grid.Row="3" x:Name="Diagrams" SelectedIndex="0" Margin="10,0,10,10">
+            <TabItem Header="Volume">
+                <ScottPlot:WpfPlot x:Name="VolumePlot"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
