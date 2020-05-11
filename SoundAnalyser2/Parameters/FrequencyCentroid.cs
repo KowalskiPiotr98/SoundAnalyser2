@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SoundAnalyser2.Parameters
@@ -14,8 +13,8 @@ namespace SoundAnalyser2.Parameters
             }
             return Task.Run (() =>
             {
-                var fc = new List<float> ();
-                for (int i = 0; i < soundfile.GetSamples ().Length / soundfile.FrameLength; i++)
+                var fc = new float [soundfile.GetSamples ().Length / soundfile.FrameLength];
+                _ = Parallel.For (0, soundfile.GetSamples ().Length / soundfile.FrameLength, (i) =>
                 {
                     var singleFc = FastFourierTransform.SelectedFrameFFT (soundfile.GetSamples (), soundfile.SampleRate, i, soundfile.FrameLength);
                     float sumUp = 0, sumDown = 0;
@@ -25,16 +24,9 @@ namespace SoundAnalyser2.Parameters
                         sumDown += singleFc [s];
                     }
                     var cent = sumUp / sumDown;
-                    if (float.IsNaN (cent) || float.IsInfinity (cent))
-                    {
-                        fc.Add (0);
-                    }
-                    else
-                    {
-                        fc.Add (sumUp / sumDown);
-                    }
-                }
-                return fc.ToArray ();
+                    fc [i] = float.IsNaN (cent) || float.IsInfinity (cent) ? 0 : sumUp / sumDown;
+                } );
+                return fc;
             });
         }
     }
