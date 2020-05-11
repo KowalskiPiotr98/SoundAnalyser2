@@ -26,6 +26,11 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Frame length [samples]:"/>
             <TextBox x:Name="FrameLength" Margin="2,10,0,10" Width="50" Text="256" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+            <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Band energy:"/>
+            <Label Margin="2,10,0,10" VerticalAlignment="Center" Content="start [Hz]:"/>
+            <TextBox x:Name="BEStart" Margin="2,10,0,10" Width="50" Text="0" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+            <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="stop [Hz]:"/>
+            <TextBox x:Name="BEStop" Margin="2,10,0,10" Width="50" Text="630" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
             <Button x:Name="Refresh" Content="Refresh" Margin="10,10,0,10" VerticalAlignment="Center" VerticalContentAlignment="Center" Click="Refresh_Click"/>
         </StackPanel>
         <TabControl Grid.Row="3" x:Name="Diagrams" SelectedIndex="0" Margin="10,0,10,10">
@@ -37,6 +42,9 @@
             </TabItem>
             <TabItem Header="Effective bandwidth">
                 <ScottPlot:WpfPlot x:Name="EffectiveBandwidthPlot"/>
+            </TabItem>
+            <TabItem Header="Band energy">
+                <ScottPlot:WpfPlot x:Name="BandEnergyPlot"/>
             </TabItem>
         </TabControl>
     </Grid>
