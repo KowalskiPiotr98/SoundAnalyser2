@@ -77,6 +77,7 @@ namespace SoundAnalyser2
             }
             plot.plt.Clear ();
             plot.plt.Title ("Volume", true);
+            plot.plt.XLabel ("Frame", enable: true);
             plot.plt.PlotSignalConst (volume);
             plot.Render ();
         }
@@ -93,6 +94,8 @@ namespace SoundAnalyser2
             }
             plot.plt.Clear ();
             plot.plt.Title ("Frequency centroid", true);
+            plot.plt.XLabel ("Frame", enable: true);
+            plot.plt.YLabel ("Centroid [Hz]", enable: true);
             plot.plt.PlotSignalConst (frequencyCentroid);
             plot.Render ();
         }
