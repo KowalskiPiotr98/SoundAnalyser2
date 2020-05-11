@@ -20,11 +20,13 @@ namespace SoundAnalyser2
         private float [] volume;
         private float [] frequencyCentroid;
         private float [] effectiveBandwidth;
+        private float [][] fftPerFrame;
 
         public float [] GetSamples () => samples;
         public float [] GetVolume () => volume;
         public float [] GetFrequencyCentroid () => frequencyCentroid;
         public float [] GetEffectiveBandwidth () => effectiveBandwidth;
+        internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
         public Soundfile (string filename, int frameLength = 256)
         {
@@ -60,6 +62,9 @@ namespace SoundAnalyser2
             {
                 this.FrameLength = frameLength.Value;
             }
+            //Eagerly calculate FFT per frame as it's needed in every parameter
+            fftPerFrame = new float [samples.Length / FrameLength] [];
+            _ = Parallel.For (0, samples.Length / FrameLength, (i) => fftPerFrame [i] = FastFourierTransform.SelectedFrameFFT (GetSamples (), SampleRate, i, FrameLength));
             //First batch of tasks - independent from one another
             var taskList = new Task<float []> []
             {

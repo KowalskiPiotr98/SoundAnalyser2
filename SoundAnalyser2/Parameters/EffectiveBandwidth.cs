@@ -22,7 +22,7 @@ namespace SoundAnalyser2.Parameters
                 var bandwidth = new float [count];
                 _ = Parallel.For (0, count, (i) =>
                 {
-                    var singleFrame = FastFourierTransform.SelectedFrameFFT (soundfile.GetSamples (), soundfile.SampleRate, i, soundfile.FrameLength);
+                    var singleFrame = soundfile.GetFftPerFrame (i);
                     float sumUp = 0, sumDown = 0;
                     for (int s = 0; s < singleFrame.Length; s++)
                     {

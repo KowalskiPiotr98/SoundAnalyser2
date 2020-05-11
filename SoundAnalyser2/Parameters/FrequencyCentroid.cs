@@ -16,7 +16,7 @@ namespace SoundAnalyser2.Parameters
                 var fc = new float [soundfile.GetSamples ().Length / soundfile.FrameLength];
                 _ = Parallel.For (0, soundfile.GetSamples ().Length / soundfile.FrameLength, (i) =>
                 {
-                    var singleFc = FastFourierTransform.SelectedFrameFFT (soundfile.GetSamples (), soundfile.SampleRate, i, soundfile.FrameLength);
+                    var singleFc = soundfile.GetFftPerFrame (i);
                     float sumUp = 0, sumDown = 0;
                     for (int s = 0; s < singleFc.Length; s++)
                     {
