@@ -19,6 +19,7 @@ namespace SoundAnalyser2
 
         private readonly string filename;
         private float [] volume;
+        private float [] frequencyCentroid;
 
         public Soundfile (string filename, int frameLength = 256)
         {
@@ -35,7 +36,7 @@ namespace SoundAnalyser2
             RefreshCalculations ();
         }
 
-        public void DrawSignalTimePlot (ref ScottPlot.WpfPlot plot)
+        public void DrawSignalTimePlot (ScottPlot.WpfPlot plot)
         {
             if (plot is null)
             {
@@ -56,21 +57,43 @@ namespace SoundAnalyser2
             }
             var taskList = new Task<float []> []
             {
-                Volume.Calculate (this)
+                Volume.Calculate (this),
+                FrequencyCentroid.Calculate (this)
             };
             Task.WaitAll (taskList);
             volume = taskList [0].Result;
+            frequencyCentroid = taskList [1].Result;
         }
 
-        public void DrawVolumePlot (ref ScottPlot.WpfPlot plot)
+        public void DrawVolumePlot (ScottPlot.WpfPlot plot)
         {
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
             }
+            if (volume is null || volume.Length == 0)
+            {
+                throw new InvalidOperationException ($"{nameof (volume)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
             plot.plt.Clear ();
-            plot.plt.Title ("Volume");
+            plot.plt.Title ("Volume", true);
             plot.plt.PlotSignalConst (volume);
+            plot.Render ();
+        }
+
+        public void DrawFrequencyCentroidPlot (ScottPlot.WpfPlot plot)
+        {
+            if (plot is null)
+            {
+                throw new ArgumentNullException (nameof (plot));
+            }
+            if (frequencyCentroid is null || frequencyCentroid.Length == 0)
+            {
+                throw new InvalidOperationException ($"{nameof (frequencyCentroid)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
+            plot.plt.Clear ();
+            plot.plt.Title ("Frequency centroid", true);
+            plot.plt.PlotSignalConst (frequencyCentroid);
             plot.Render ();
         }
     }
