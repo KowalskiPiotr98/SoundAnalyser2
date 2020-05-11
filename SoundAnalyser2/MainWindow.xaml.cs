@@ -44,8 +44,10 @@ namespace SoundAnalyser2
             {
                 return;
             }
-            file.DrawSignalTimePlot (ref SignalTimePlot);
-            file.DrawVolumePlot (ref VolumePlot);
+            file.DrawSignalTimePlot (SignalTimePlot);
+            file.DrawVolumePlot (VolumePlot);
+            file.DrawFrequencyCentroidPlot (FrequencyCentroidPlot);
+            file.DrawEffectiveBandwidthPlot (EffectiveBandwidthPlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)

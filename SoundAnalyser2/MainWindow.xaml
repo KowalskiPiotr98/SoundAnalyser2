@@ -32,6 +32,12 @@
             <TabItem Header="Volume">
                 <ScottPlot:WpfPlot x:Name="VolumePlot"/>
             </TabItem>
+            <TabItem Header="Frequency centroid">
+                <ScottPlot:WpfPlot x:Name="FrequencyCentroidPlot"/>
+            </TabItem>
+            <TabItem Header="Effective bandwidth">
+                <ScottPlot:WpfPlot x:Name="EffectiveBandwidthPlot"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
