@@ -10,6 +10,8 @@ namespace SoundAnalyser2
     public class Soundfile
     {
         public int FrameLength { get; private set; }
+        public int BEFrequencyStart { get; private set; }
+        public int BEFrequencyStop { get; private set; }
 
         private readonly float [] samples;
 
@@ -28,7 +30,7 @@ namespace SoundAnalyser2
         public float [] GetEffectiveBandwidth () => effectiveBandwidth;
         internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
-        public Soundfile (string filename, int frameLength = 256)
+        public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
         {
             using var wav = new WaveFileReader (filename);
             if (wav.WaveFormat.SampleRate != 22050 || wav.WaveFormat.BitsPerSample != 16 || wav.WaveFormat.Channels != 1)
@@ -38,6 +40,8 @@ namespace SoundAnalyser2
             this.FrameLength = frameLength;
             this.SampleRate = wav.WaveFormat.SampleRate;
             this.filename = filename;
+            this.BEFrequencyStart = beStart;
+            this.BEFrequencyStop = beStop;
             samples = (new float [wav.SampleCount]);
             wav.ToSampleProvider ().Read (samples, 0, samples.Length);
             RefreshCalculations ();
@@ -56,11 +60,19 @@ namespace SoundAnalyser2
             plot.Render ();
         }
 
-        public void RefreshCalculations (int? frameLength = null)
+        public void RefreshCalculations (int? frameLength = null, int? beStart = null, int? beStop = null)
         {
             if (frameLength.HasValue)
             {
                 this.FrameLength = frameLength.Value;
+            }
+            if (beStart.HasValue)
+            {
+                this.BEFrequencyStart = beStart.Value;
+            }
+            if (beStop.HasValue)
+            {
+                this.BEFrequencyStop = beStop.Value;
             }
             //Eagerly calculate FFT per frame as it's needed in every parameter
             fftPerFrame = new float [samples.Length / FrameLength] [];
