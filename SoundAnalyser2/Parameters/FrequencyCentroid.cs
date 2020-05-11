@@ -25,7 +25,7 @@ namespace SoundAnalyser2.Parameters
                     }
                     var cent = sumUp / sumDown;
                     fc [i] = float.IsNaN (cent) || float.IsInfinity (cent) ? 0 : sumUp / sumDown;
-                } );
+                });
                 return fc;
             });
         }
