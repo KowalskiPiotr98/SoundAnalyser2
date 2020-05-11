@@ -13,13 +13,20 @@ namespace SoundAnalyser2
 
         private readonly float [] samples;
 
-        public float [] GetSamples () => samples;
 
         public int SampleRate { get; }
 
         private readonly string filename;
         private float [] volume;
         private float [] frequencyCentroid;
+        private float [] effectiveBandwidth;
+        private float [][] fftPerFrame;
+
+        public float [] GetSamples () => samples;
+        public float [] GetVolume () => volume;
+        public float [] GetFrequencyCentroid () => frequencyCentroid;
+        public float [] GetEffectiveBandwidth () => effectiveBandwidth;
+        internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
         public Soundfile (string filename, int frameLength = 256)
         {
@@ -55,6 +62,10 @@ namespace SoundAnalyser2
             {
                 this.FrameLength = frameLength.Value;
             }
+            //Eagerly calculate FFT per frame as it's needed in every parameter
+            fftPerFrame = new float [samples.Length / FrameLength] [];
+            _ = Parallel.For (0, samples.Length / FrameLength, (i) => fftPerFrame [i] = FastFourierTransform.SelectedFrameFFT (GetSamples (), SampleRate, i, FrameLength));
+            //First batch of tasks - independent from one another
             var taskList = new Task<float []> []
             {
                 Volume.Calculate (this),
@@ -63,6 +74,13 @@ namespace SoundAnalyser2
             Task.WaitAll (taskList);
             volume = taskList [0].Result;
             frequencyCentroid = taskList [1].Result;
+            //Second batch - previously calculated parameters are needed here
+            taskList = new Task<float []> []
+            {
+                EffectiveBandwidth.Calculate (this)
+            };
+            Task.WaitAll (taskList);
+            effectiveBandwidth = taskList [0].Result;
         }
 
         public void DrawVolumePlot (ScottPlot.WpfPlot plot)
@@ -95,8 +113,26 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Frequency centroid", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Centroid [Hz]", enable: true);
+            plot.plt.YLabel ("Hz", enable: true);
             plot.plt.PlotSignalConst (frequencyCentroid);
+            plot.Render ();
+        }
+
+        public void DrawEffectiveBandwidthPlot (ScottPlot.WpfPlot plot)
+        {
+            if (plot is null)
+            {
+                throw new ArgumentNullException (nameof (plot));
+            }
+            if (effectiveBandwidth is null || effectiveBandwidth.Length == 0)
+            {
+                throw new InvalidOperationException ($"{nameof (effectiveBandwidth)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
+            plot.plt.Clear ();
+            plot.plt.Title ("Effective bandwidth", true);
+            plot.plt.XLabel ("Frame", enable: true);
+            plot.plt.YLabel ("Hz", enable: true);
+            plot.plt.PlotSignalConst (effectiveBandwidth);
             plot.Render ();
         }
     }

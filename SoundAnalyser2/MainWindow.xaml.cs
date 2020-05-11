@@ -47,6 +47,7 @@ namespace SoundAnalyser2
             file.DrawSignalTimePlot (SignalTimePlot);
             file.DrawVolumePlot (VolumePlot);
             file.DrawFrequencyCentroidPlot (FrequencyCentroidPlot);
+            file.DrawEffectiveBandwidthPlot (EffectiveBandwidthPlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)
