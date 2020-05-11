@@ -22,12 +22,14 @@ namespace SoundAnalyser2
         private float [] volume;
         private float [] frequencyCentroid;
         private float [] effectiveBandwidth;
+        private float [] bandEnergy;
         private float [][] fftPerFrame;
 
         public float [] GetSamples () => samples;
         public float [] GetVolume () => volume;
         public float [] GetFrequencyCentroid () => frequencyCentroid;
         public float [] GetEffectiveBandwidth () => effectiveBandwidth;
+        public float [] GetBandEnergy () => bandEnergy;
         internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
         public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
@@ -81,11 +83,13 @@ namespace SoundAnalyser2
             var taskList = new Task<float []> []
             {
                 Volume.Calculate (this),
-                FrequencyCentroid.Calculate (this)
+                FrequencyCentroid.Calculate (this),
+                BandEnergy.Calculate (this)
             };
             Task.WaitAll (taskList);
             volume = taskList [0].Result;
             frequencyCentroid = taskList [1].Result;
+            bandEnergy = taskList [2].Result;
             //Second batch - previously calculated parameters are needed here
             taskList = new Task<float []> []
             {
@@ -101,7 +105,7 @@ namespace SoundAnalyser2
             {
                 throw new ArgumentNullException (nameof (plot));
             }
-            if (volume is null || volume.Length == 0)
+            if (volume is null)
             {
                 throw new InvalidOperationException ($"{nameof (volume)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
             }
@@ -118,7 +122,7 @@ namespace SoundAnalyser2
             {
                 throw new ArgumentNullException (nameof (plot));
             }
-            if (frequencyCentroid is null || frequencyCentroid.Length == 0)
+            if (frequencyCentroid is null)
             {
                 throw new InvalidOperationException ($"{nameof (frequencyCentroid)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
             }
@@ -136,15 +140,33 @@ namespace SoundAnalyser2
             {
                 throw new ArgumentNullException (nameof (plot));
             }
-            if (effectiveBandwidth is null || effectiveBandwidth.Length == 0)
+            if (effectiveBandwidth is null)
             {
                 throw new InvalidOperationException ($"{nameof (effectiveBandwidth)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
             }
             plot.plt.Clear ();
             plot.plt.Title ("Effective bandwidth", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: true);
+            plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (effectiveBandwidth);
+            plot.Render ();
+        }
+
+        public void DrawBandEnergyPlot (ScottPlot.WpfPlot plot)
+        {
+            if (plot is null)
+            {
+                throw new ArgumentNullException (nameof (plot));
+            }
+            if (bandEnergy is null)
+            {
+                throw new InvalidOperationException ($"{nameof (bandEnergy)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
+            plot.plt.Clear ();
+            plot.plt.Title ("Band energy", true);
+            plot.plt.XLabel ("Frame", enable: true);
+            plot.plt.YLabel ("Hz", enable: false);
+            plot.plt.PlotSignalConst (bandEnergy);
             plot.Render ();
         }
     }

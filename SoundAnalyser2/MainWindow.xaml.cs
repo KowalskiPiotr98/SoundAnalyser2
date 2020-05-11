@@ -32,9 +32,9 @@ namespace SoundAnalyser2
                 {
                     _ = MessageBox.Show (err.Message, "File error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException err)
                 {
-                    _ = MessageBox.Show ("File loading failed, couldn't parse parameters.", "Loading error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show (err.Message, "Loading error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (Exception)
                 {
@@ -57,6 +57,7 @@ namespace SoundAnalyser2
             file.DrawVolumePlot (VolumePlot);
             file.DrawFrequencyCentroidPlot (FrequencyCentroidPlot);
             file.DrawEffectiveBandwidthPlot (EffectiveBandwidthPlot);
+            file.DrawBandEnergyPlot (BandEnergyPlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)
@@ -71,9 +72,9 @@ namespace SoundAnalyser2
                 file.RefreshCalculations (frameLength, beStart, beStop);
                 RedrawAll ();
             }
-            catch (ArgumentException)
+            catch (ArgumentException err)
             {
-                _ = MessageBox.Show ("Refresh failed, couldn't parse parameters.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show (err.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception)
             {
@@ -84,9 +85,9 @@ namespace SoundAnalyser2
 
         private void ParseAllInput (out int frameLength, out int beStart, out int beStop)
         {
-            frameLength = ParseFrameLength () ?? throw new ArgumentException ("Parsing failed", nameof (frameLength));
-            beStart = ParseBEStart () ?? throw new ArgumentException ("Parsing failed", nameof (beStart));
-            beStop = ParseBEStop () ?? throw new ArgumentException ("Parsing failed", nameof (beStop));
+            frameLength = ParseFrameLength () ?? throw new ArgumentException ("Parsing failed");
+            beStart = ParseBEStart () ?? throw new ArgumentException ("Parsing failed");
+            beStop = ParseBEStop () ?? throw new ArgumentException ("Parsing failed");
         }
 
         private int? ParseFrameLength ()

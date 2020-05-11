@@ -43,6 +43,9 @@
             <TabItem Header="Effective bandwidth">
                 <ScottPlot:WpfPlot x:Name="EffectiveBandwidthPlot"/>
             </TabItem>
+            <TabItem Header="Band energy">
+                <ScottPlot:WpfPlot x:Name="BandEnergyPlot"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
