@@ -55,7 +55,7 @@ namespace SoundAnalyser2
             var frameLengthString = FrameLength;
             if (!Int32.TryParse (frameLengthString.Text, out int frameLength))
             {
-                _ = MessageBox.Show ($"{frameLengthString.Text} is not a valid integer", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = MessageBox.Show ($"Frame length of {frameLengthString.Text} is not valid. Please input a valid integer.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 frameLengthString.Text = file is null ? "256" : file.FrameLength.ToString ();
                 return;
             }
