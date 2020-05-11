@@ -21,8 +21,8 @@ namespace SoundAnalyser2.Parameters
                     float sumUp = 0, sumDown = 0;
                     for (int s = 0; s < singleFc.Length; s++)
                     {
-                        sumUp += i * singleFc [i];
-                        sumDown += singleFc [i];
+                        sumUp += s * singleFc [s];
+                        sumDown += singleFc [s];
                     }
                     var cent = sumUp / sumDown;
                     if (float.IsNaN (cent) || float.IsInfinity (cent))
