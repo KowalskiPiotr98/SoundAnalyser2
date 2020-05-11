@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SoundAnalyser2.Parameters
@@ -15,8 +14,8 @@ namespace SoundAnalyser2.Parameters
             }
             return Task.Run (() =>
             {
-                var volume = new List<float> ();
-                for (int i = 0; i < soundfile.GetSamples ().Length / soundfile.FrameLength; i++)
+                var volume = new float [soundfile.GetSamples ().Length / soundfile.FrameLength];
+                _ = Parallel.For (0, soundfile.GetSamples ().Length / soundfile.FrameLength, (i) =>
                 {
                     var singleVolume = FastFourierTransform.SelectedFrameFFT (soundfile.GetSamples (), soundfile.SampleRate, i, soundfile.FrameLength);
                     float sum = 0;
@@ -24,9 +23,9 @@ namespace SoundAnalyser2.Parameters
                     {
                         sum += j * j;
                     }
-                    volume.Add (sum / soundfile.FrameLength);
-                }
-                return volume.ToArray ();
+                    volume [i] = (sum / soundfile.FrameLength);
+                });
+                return volume;
             });
         }
     }
