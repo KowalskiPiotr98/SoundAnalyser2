@@ -64,7 +64,7 @@ namespace SoundAnalyser2
             }
             //Eagerly calculate FFT per frame as it's needed in every parameter
             fftPerFrame = new float [samples.Length / FrameLength] [];
-            _ = Parallel.For (0, samples.Length / FrameLength, (i) => fftPerFrame [i] = FastFourierTransform.SelectedFrameFFT (GetSamples (), SampleRate, i, FrameLength));
+            _ = Parallel.For (0, samples.Length / FrameLength, (i) => fftPerFrame [i] = FastFourierTransform.SelectedFrameFFT (GetSamples (), SampleRate, i, FrameLength, false));
             //First batch of tasks - independent from one another
             var taskList = new Task<float []> []
             {
