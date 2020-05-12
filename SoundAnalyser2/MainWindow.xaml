@@ -26,7 +26,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Frame length [samples]:"/>
             <TextBox x:Name="FrameLength" Margin="2,10,0,10" Width="50" Text="256" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
-            <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Band energy:"/>
+            <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="Frequency band:"/>
             <Label Margin="2,10,0,10" VerticalAlignment="Center" Content="start [Hz]:"/>
             <TextBox x:Name="BEStart" Margin="2,10,0,10" Width="50" Text="0" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
             <Label Margin="10,10,0,10" VerticalAlignment="Center" Content="stop [Hz]:"/>
@@ -48,6 +48,9 @@
             </TabItem>
             <TabItem Header="Band energy ratio">
                 <ScottPlot:WpfPlot x:Name="BandEnergyRatioPlot"/>
+            </TabItem>
+            <TabItem Header="Spectral flatness measure">
+                <ScottPlot:WpfPlot x:Name="SpectralFlatnessMeasurePlot"/>
             </TabItem>
         </TabControl>
     </Grid>
