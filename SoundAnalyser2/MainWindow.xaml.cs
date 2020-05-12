@@ -59,6 +59,7 @@ namespace SoundAnalyser2
             file.DrawEffectiveBandwidthPlot (EffectiveBandwidthPlot);
             file.DrawBandEnergyPlot (BandEnergyPlot);
             file.DrawBandEnergyRatioPlot (BandEnergyRatioPlot);
+            file.DrawSpectralFlatnessMeasurePlot (SpectralFlatnessMeasurePlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)
