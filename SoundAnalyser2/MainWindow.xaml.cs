@@ -58,6 +58,7 @@ namespace SoundAnalyser2
             file.DrawFrequencyCentroidPlot (FrequencyCentroidPlot);
             file.DrawEffectiveBandwidthPlot (EffectiveBandwidthPlot);
             file.DrawBandEnergyPlot (BandEnergyPlot);
+            file.DrawBandEnergyRatioPlot (BandEnergyRatioPlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)

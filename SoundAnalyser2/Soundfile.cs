@@ -23,6 +23,7 @@ namespace SoundAnalyser2
         private float [] frequencyCentroid;
         private float [] effectiveBandwidth;
         private float [] bandEnergy;
+        private float [] bandEnergyRatio;
         private float [][] fftPerFrame;
 
         public float [] GetSamples () => samples;
@@ -30,6 +31,7 @@ namespace SoundAnalyser2
         public float [] GetFrequencyCentroid () => frequencyCentroid;
         public float [] GetEffectiveBandwidth () => effectiveBandwidth;
         public float [] GetBandEnergy () => bandEnergy;
+        public float [] GetBandEnergyRatio () => bandEnergyRatio;
         internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
         public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
@@ -93,10 +95,12 @@ namespace SoundAnalyser2
             //Second batch - previously calculated parameters are needed here
             taskList = new Task<float []> []
             {
-                EffectiveBandwidth.Calculate (this)
+                EffectiveBandwidth.Calculate (this),
+                BandEnergyRatio.Calculate (this)
             };
             Task.WaitAll (taskList);
             effectiveBandwidth = taskList [0].Result;
+            bandEnergyRatio = taskList [1].Result;
         }
 
         public void DrawVolumePlot (ScottPlot.WpfPlot plot)
@@ -167,6 +171,23 @@ namespace SoundAnalyser2
             plot.plt.XLabel ("Frame", enable: true);
             plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (bandEnergy);
+            plot.Render ();
+        }
+
+        public void DrawBandEnergyRatioPlot (ScottPlot.WpfPlot plot)
+        {
+            if (plot is null)
+            {
+                throw new ArgumentNullException (nameof (plot));
+            }
+            if (bandEnergyRatio is null)
+            {
+                throw new InvalidOperationException ($"{nameof (bandEnergyRatio)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
+            plot.plt.Clear ();
+            plot.plt.Title ("Band energy ratio", true);
+            plot.plt.XLabel ("Frame", enable: true);
+            plot.plt.PlotSignalConst (bandEnergyRatio);
             plot.Render ();
         }
     }

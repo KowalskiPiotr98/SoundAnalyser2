@@ -46,6 +46,9 @@
             <TabItem Header="Band energy">
                 <ScottPlot:WpfPlot x:Name="BandEnergyPlot"/>
             </TabItem>
+            <TabItem Header="Band energy ratio">
+                <ScottPlot:WpfPlot x:Name="BandEnergyRatioPlot"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
