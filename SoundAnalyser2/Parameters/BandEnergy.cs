@@ -11,12 +11,8 @@ namespace SoundAnalyser2.Parameters
             {
                 throw new ArgumentNullException (nameof (soundfile));
             }
-            var f1 = Math.Max (soundfile.BEFrequencyStart, 0);
-            var f2 = Math.Max (soundfile.BEFrequencyStop, 0);
-            if (f2 < f1)
-            {
-                (f1, f2) = (f2, f1);
-            }
+            var f1 = soundfile.BEFrequencyStart;
+            var f2 = soundfile.BEFrequencyStop;
             return Task.Run (() =>
             {
                 var count = soundfile.GetSamples ().Length / soundfile.FrameLength;

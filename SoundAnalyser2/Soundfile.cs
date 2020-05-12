@@ -80,6 +80,12 @@ namespace SoundAnalyser2
             {
                 this.BEFrequencyStop = beStop.Value;
             }
+            BEFrequencyStart = Math.Max (BEFrequencyStart, 0);
+            BEFrequencyStop = Math.Max (BEFrequencyStop, 0);
+            if (BEFrequencyStop < BEFrequencyStart)
+            {
+                (BEFrequencyStart, BEFrequencyStop) = (BEFrequencyStop, BEFrequencyStart);
+            }
             //Eagerly calculate FFT per frame as it's needed in every parameter
             fftPerFrame = new float [samples.Length / FrameLength] [];
             _ = Parallel.For (0, samples.Length / FrameLength, (i) => fftPerFrame [i] = FastFourierTransform.SelectedFrameFFT (GetSamples (), SampleRate, i, FrameLength, false));
