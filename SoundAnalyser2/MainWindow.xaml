@@ -52,6 +52,9 @@
             <TabItem Header="Spectral flatness measure">
                 <ScottPlot:WpfPlot x:Name="SpectralFlatnessMeasurePlot"/>
             </TabItem>
+            <TabItem Header="Spectral crest factor">
+                <ScottPlot:WpfPlot x:Name="SpectralCrestFactorPlot"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

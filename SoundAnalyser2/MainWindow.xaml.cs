@@ -60,6 +60,7 @@ namespace SoundAnalyser2
             file.DrawBandEnergyPlot (BandEnergyPlot);
             file.DrawBandEnergyRatioPlot (BandEnergyRatioPlot);
             file.DrawSpectralFlatnessMeasurePlot (SpectralFlatnessMeasurePlot);
+            file.DrawSpectralCrestFactorPlot (SpectralCrestFactorPlot);
         }
 
         private void Refresh_Click (object sender, RoutedEventArgs e)
