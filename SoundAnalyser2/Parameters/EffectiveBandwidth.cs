@@ -7,10 +7,7 @@ namespace SoundAnalyser2.Parameters
     {
         public static Task<float []> Calculate (Soundfile soundfile)
         {
-            if (soundfile is null)
-            {
-                throw new ArgumentNullException (nameof (soundfile));
-            }
+            SoundfileValidator.ValidateBasics (soundfile);
             var centroid = soundfile.GetFrequencyCentroid ();
             if (centroid is null || centroid.Length == 0)
             {

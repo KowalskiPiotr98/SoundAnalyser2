@@ -36,7 +36,7 @@ namespace SoundAnalyser2
         public float [] GetBandEnergyRatio () => bandEnergyRatio;
         public float [] GetSpectralFlatnessMeasure () => spectralFlatnessMeasure;
         public float [] GetSpectralCrestFactor () => spectralCrestFactor;
-        internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
+        internal float [] GetFftPerFrame (int n) => fftPerFrame [n] ?? Array.Empty<float> ();
 
         public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
         {
