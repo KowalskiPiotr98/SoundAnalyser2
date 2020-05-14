@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage ("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "Globalisation is not required int this project.", Scope = "module")]
 [assembly: SuppressMessage ("Globalization", "CA1305:Specify IFormatProvider", Justification = "Globalisation is not required in this project", Scope = "module")]
+[assembly: SuppressMessage ("Design", "CA1062:Validate arguments of public methods", Justification = "Validation moved to separate method because it's identical in every method.", Scope = "namespaceanddescendants", Target = "SoundAnalyser2.Parameters")]

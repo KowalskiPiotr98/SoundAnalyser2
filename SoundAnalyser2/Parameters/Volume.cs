@@ -8,10 +8,7 @@ namespace SoundAnalyser2.Parameters
 
         public static Task<float []> Calculate (Soundfile soundfile)
         {
-            if (soundfile is null)
-            {
-                throw new ArgumentNullException (nameof (soundfile));
-            }
+            SoundfileValidator.ValidateBasics (soundfile);
             return Task.Run (() =>
             {
                 var volume = new float [soundfile.GetSamples ().Length / soundfile.FrameLength];
