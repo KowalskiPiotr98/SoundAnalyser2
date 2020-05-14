@@ -7,15 +7,6 @@ namespace SoundAnalyser2.Parameters
 {
     internal static class FastFourierTransform
     {
-#pragma warning disable S125
-        //public enum WindowFunction
-        // Sections of code should not be commented out
-        //{
-        //    Rectangular,
-        //    Hamming,
-        //    Hann
-        //}
-#pragma warning restore S125 // Might be removed later
         public static float [] FullFFT (float [] samples, int sampleRate)
         {
             if (samples is null)
@@ -25,7 +16,7 @@ namespace SoundAnalyser2.Parameters
             return SelectedFrameFFT (samples, sampleRate, 0, samples.Length);
         }
 
-        public static float [] SelectedFrameFFT (float [] samples, int sampleRate, int startFrame, int frameLength)
+        public static float [] SelectedFrameFFT (float [] samples, int sampleRate, int startFrame, int frameLength, bool scaleToDb = true)
         {
             if (samples is null)
             {
@@ -46,19 +37,20 @@ namespace SoundAnalyser2.Parameters
                 frameLength = samples.Length - startSample;
             }
             Array.Copy (samples, startSample, tempFFT, 0, frameLength);
-            MathNet.Numerics.IntegralTransforms.Fourier.ForwardReal (/*ApplyWindowFunction*/ (tempFFT), frameLength, MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling);
+            MathNet.Numerics.IntegralTransforms.Fourier.ForwardReal (tempFFT, frameLength, MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling);
             var FFTD = new Dictionary<int, double> ();
             for (int i = 0; i < tempFFT.Length; i += 2)
             {
                 var x = (int)(1.0 * sampleRate / frameLength * (i / 2));
                 tempFFT [i] = Math.Sqrt (tempFFT [i] * tempFFT [i] + tempFFT [i + 1] * tempFFT [i + 1]);
-                if (FFTD.ContainsKey (x) && FFTD [x] < 20 * Math.Log10 (tempFFT [i]))
+                var y = scaleToDb ? 20 * Math.Log10 (tempFFT [i]) : tempFFT [i];
+                if (FFTD.ContainsKey (x) && FFTD [x] < y)
                 {
-                    FFTD [x] = 20 * Math.Log10 (tempFFT [i]);
+                    FFTD [x] = y;
                 }
                 else if (!FFTD.ContainsKey (x))
                 {
-                    FFTD.Add (x, 20 * Math.Log10 (tempFFT [i]));
+                    FFTD.Add (x, y);
                 }
             }
             var FFT = new float [FFTD.Keys.Max () + 1];
@@ -104,27 +96,5 @@ namespace SoundAnalyser2.Parameters
             });
             return FFT;
         }
-#pragma warning disable S125
-        //private static double [] ApplyWindowFunction (double [] frame)
-        //{
-        //    switch (MainWindow.GetWindowFunction ())
-        //    {
-        //        case WindowFunction.Rectangular:
-        //            return frame;
-        //        case WindowFunction.Hamming:
-        //        {
-        //            _ = Parallel.For (0, frame.Length, (i) => frame [i] *= 0.54 + 0.46 * Math.Cos (Math.PI * i / frame.Length));
-        //            return frame;
-        //        }
-        //        case WindowFunction.Hann:
-        //        {
-        //            _ = Parallel.For (0, frame.Length, (i) => frame [i] *= (1 + Math.Cos (Math.PI * i / frame.Length)) / 2);
-        //            return frame;
-        //        }
-        //        default:
-        //            throw new NotImplementedException ();
-        //    }
-        //}
-#pragma warning restore S125 // Might be removed later
     }
 }
