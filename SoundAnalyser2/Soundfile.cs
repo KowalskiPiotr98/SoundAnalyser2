@@ -25,6 +25,7 @@ namespace SoundAnalyser2
         private float [] bandEnergy;
         private float [] bandEnergyRatio;
         private float [] spectralFlatnessMeasure;
+        private float [] spectralCrestFactor;
         private float [][] fftPerFrame;
 
         public float [] GetSamples () => samples;
@@ -34,6 +35,7 @@ namespace SoundAnalyser2
         public float [] GetBandEnergy () => bandEnergy;
         public float [] GetBandEnergyRatio () => bandEnergyRatio;
         public float [] GetSpectralFlatnessMeasure () => spectralFlatnessMeasure;
+        public float [] GetSpectralCrestFactor () => spectralCrestFactor;
         internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
 
         public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
@@ -95,13 +97,15 @@ namespace SoundAnalyser2
                 Volume.Calculate (this),
                 FrequencyCentroid.Calculate (this),
                 BandEnergy.Calculate (this),
-                SpectralFlatnessMeasure.Calculate (this)
+                SpectralFlatnessMeasure.Calculate (this),
+                SpectralCrestFactor.Calculate (this)
             };
             Task.WaitAll (taskList);
             volume = taskList [0].Result;
             frequencyCentroid = taskList [1].Result;
             bandEnergy = taskList [2].Result;
             spectralFlatnessMeasure = taskList [3].Result;
+            spectralCrestFactor = taskList [4].Result;
             //Second batch - previously calculated parameters are needed here
             taskList = new Task<float []> []
             {
@@ -215,6 +219,23 @@ namespace SoundAnalyser2
             plot.plt.Title ("Spectral flatness measure", true);
             plot.plt.XLabel ("Frame", enable: true);
             plot.plt.PlotSignalConst (spectralFlatnessMeasure);
+            plot.Render ();
+        }
+
+        public void DrawSpectralCrestFactorPlot (ScottPlot.WpfPlot plot)
+        {
+            if (plot is null)
+            {
+                throw new ArgumentNullException (nameof (plot));
+            }
+            if (spectralCrestFactor is null)
+            {
+                throw new InvalidOperationException ($"{nameof (spectralCrestFactor)} must be calculated before being drawn. Call {nameof (RefreshCalculations)} before drawing.");
+            }
+            plot.plt.Clear ();
+            plot.plt.Title ("Spectral crest factor", true);
+            plot.plt.XLabel ("Frame", enable: true);
+            plot.plt.PlotSignalConst (spectralCrestFactor);
             plot.Render ();
         }
     }
