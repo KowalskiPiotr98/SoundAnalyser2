@@ -18,6 +18,9 @@
             <MenuItem Header="File">
                 <MenuItem Header="Load WAV" Name="LoadWAV" Click="LoadWAV_Click"/>
             </MenuItem>
+            <MenuItem Header="Hidden parameters">
+                <MenuItem Header="Show" Name="ShowHidden" Click="ShowHidden_Click"/>
+            </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Help" Name="HelpMenu" Click="HelpMenu_Click"/>
             </MenuItem>
@@ -46,13 +49,13 @@
             <TabItem Header="Band energy">
                 <ScottPlot:WpfPlot x:Name="BandEnergyPlot"/>
             </TabItem>
-            <TabItem Header="Band energy ratio">
+            <TabItem x:Name="hiddenTab1" Visibility="Collapsed" Header="Band energy ratio">
                 <ScottPlot:WpfPlot x:Name="BandEnergyRatioPlot"/>
             </TabItem>
-            <TabItem Header="Spectral flatness measure">
+            <TabItem x:Name="hiddenTab2" Visibility="Collapsed" Header="Spectral flatness measure">
                 <ScottPlot:WpfPlot x:Name="SpectralFlatnessMeasurePlot"/>
             </TabItem>
-            <TabItem Header="Spectral crest factor">
+            <TabItem x:Name="hiddenTab3" Visibility="Collapsed" Header="Spectral crest factor">
                 <ScottPlot:WpfPlot x:Name="SpectralCrestFactorPlot"/>
             </TabItem>
         </TabControl>

@@ -36,7 +36,7 @@ namespace SoundAnalyser2
         public float [] GetBandEnergyRatio () => bandEnergyRatio;
         public float [] GetSpectralFlatnessMeasure () => spectralFlatnessMeasure;
         public float [] GetSpectralCrestFactor () => spectralCrestFactor;
-        internal float [] GetFftPerFrame (int n) => fftPerFrame [n];
+        internal float [] GetFftPerFrame (int n) => fftPerFrame [n] ?? Array.Empty<float> ();
 
         public Soundfile (string filename, int frameLength = 256, int beStart = 0, int beStop = 630)
         {
@@ -147,7 +147,6 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Frequency centroid", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: true);
             plot.plt.PlotSignalConst (frequencyCentroid);
             plot.Render ();
         }
@@ -165,7 +164,6 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Effective bandwidth", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (effectiveBandwidth);
             plot.Render ();
         }
@@ -183,13 +181,16 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Band energy", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (bandEnergy);
             plot.Render ();
         }
 
         public void DrawBandEnergyRatioPlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
@@ -207,6 +208,10 @@ namespace SoundAnalyser2
 
         public void DrawSpectralFlatnessMeasurePlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
@@ -224,6 +229,10 @@ namespace SoundAnalyser2
 
         public void DrawSpectralCrestFactorPlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));

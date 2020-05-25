@@ -7,10 +7,11 @@ namespace SoundAnalyser2.Parameters
     {
         public static Task<float []> Calculate (Soundfile soundfile)
         {
-            if (soundfile is null)
+            if (!MainWindow.ShowHiddenParameters)
             {
-                throw new ArgumentNullException (nameof (soundfile));
+                return Task.Run (() => Array.Empty<float> ());
             }
+            SoundfileValidator.ValidateBasics (soundfile);
             var f1 = soundfile.BEFrequencyStart;
             var f2 = soundfile.BEFrequencyStop;
             return Task.Run (() =>

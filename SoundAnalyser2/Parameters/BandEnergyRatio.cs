@@ -7,10 +7,11 @@ namespace SoundAnalyser2.Parameters
     {
         public static Task<float []> Calculate (Soundfile soundfile)
         {
-            if (soundfile is null)
+            if (!MainWindow.ShowHiddenParameters)
             {
-                throw new ArgumentNullException (nameof (soundfile));
+                return Task.Run (() => Array.Empty<float> ());
             }
+            SoundfileValidator.ValidateBasics (soundfile);
             if (soundfile.GetVolume () is null || soundfile.GetBandEnergy () is null)
             {
                 throw new InvalidOperationException ("Volumen and Band Energy have to be calculated before calling this function.");
