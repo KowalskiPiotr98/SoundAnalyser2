@@ -147,7 +147,6 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Frequency centroid", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: true);
             plot.plt.PlotSignalConst (frequencyCentroid);
             plot.Render ();
         }
@@ -165,7 +164,6 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Effective bandwidth", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (effectiveBandwidth);
             plot.Render ();
         }
@@ -183,7 +181,6 @@ namespace SoundAnalyser2
             plot.plt.Clear ();
             plot.plt.Title ("Band energy", true);
             plot.plt.XLabel ("Frame", enable: true);
-            plot.plt.YLabel ("Hz", enable: false);
             plot.plt.PlotSignalConst (bandEnergy);
             plot.Render ();
         }
