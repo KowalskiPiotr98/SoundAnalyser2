@@ -46,13 +46,13 @@
             <TabItem Header="Band energy">
                 <ScottPlot:WpfPlot x:Name="BandEnergyPlot"/>
             </TabItem>
-            <TabItem Header="Band energy ratio">
+            <TabItem Visibility="Collapsed" Header="Band energy ratio">
                 <ScottPlot:WpfPlot x:Name="BandEnergyRatioPlot"/>
             </TabItem>
-            <TabItem Header="Spectral flatness measure">
+            <TabItem Visibility="Collapsed" Header="Spectral flatness measure">
                 <ScottPlot:WpfPlot x:Name="SpectralFlatnessMeasurePlot"/>
             </TabItem>
-            <TabItem Header="Spectral crest factor">
+            <TabItem Visibility="Collapsed" Header="Spectral crest factor">
                 <ScottPlot:WpfPlot x:Name="SpectralCrestFactorPlot"/>
             </TabItem>
         </TabControl>

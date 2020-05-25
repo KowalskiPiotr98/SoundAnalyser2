@@ -7,6 +7,10 @@ namespace SoundAnalyser2.Parameters
     {
         public static Task<float []> Calculate (Soundfile soundfile)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return Task.Run (() => Array.Empty<float> ());
+            }
             SoundfileValidator.ValidateBasics (soundfile);
             if (soundfile.GetVolume () is null || soundfile.GetBandEnergy () is null)
             {

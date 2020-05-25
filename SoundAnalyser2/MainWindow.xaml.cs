@@ -13,6 +13,7 @@ namespace SoundAnalyser2
         private Soundfile file = null;
         public MainWindow () => InitializeComponent ();
 
+        public static bool ShowHiddenParameters { get; set; } = false;
         private void LoadWAV_Click (object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog
