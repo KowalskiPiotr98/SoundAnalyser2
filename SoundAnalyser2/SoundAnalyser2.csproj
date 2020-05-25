@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Version>0.3.0-RC1</Version>
+    <Version>0.4.0-RC2</Version>
     <Authors>Piotr Kowalski</Authors>
     <Company>Piotr Kowalski</Company>
     <Copyright></Copyright>

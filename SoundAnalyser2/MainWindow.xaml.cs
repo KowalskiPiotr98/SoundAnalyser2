@@ -13,6 +13,7 @@ namespace SoundAnalyser2
         private Soundfile file = null;
         public MainWindow () => InitializeComponent ();
 
+        public static bool ShowHiddenParameters { get; set; } = false;
         private void LoadWAV_Click (object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog
@@ -127,6 +128,24 @@ namespace SoundAnalyser2
                 return null;
             }
             return beStop;
+        }
+
+        private void ShowHidden_Click (object sender, RoutedEventArgs e)
+        {
+            if (ShowHiddenParameters)
+            {
+                return;
+            }
+            var response = MessageBox.Show ("Projekt przygotowałem z dość dużym wyprzedzeniem, więc w kodzie były przygotowane już pierwsze wersje metod obliczających parametry, które zostały ostatecznie usunięte z zakresu projektu. " +
+                "Żeby nie poszły na marne, to je zostawiłem, jednak nie sprawdzałem w żaden sposób czy nie ma w nich błędów (w tym głupich i oczywistych). " +
+                "Proszę używać na własne ryzyko. :)", "Uwaga!", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            if (response == MessageBoxResult.OK)
+            {
+                ShowHiddenParameters = true;
+                hiddenTab1.Visibility = Visibility.Visible;
+                hiddenTab2.Visibility = Visibility.Visible;
+                hiddenTab3.Visibility = Visibility.Visible;
+            }
         }
     }
 }

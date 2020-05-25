@@ -190,6 +190,10 @@ namespace SoundAnalyser2
 
         public void DrawBandEnergyRatioPlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
@@ -207,6 +211,10 @@ namespace SoundAnalyser2
 
         public void DrawSpectralFlatnessMeasurePlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
@@ -224,6 +232,10 @@ namespace SoundAnalyser2
 
         public void DrawSpectralCrestFactorPlot (ScottPlot.WpfPlot plot)
         {
+            if (!MainWindow.ShowHiddenParameters)
+            {
+                return;
+            }
             if (plot is null)
             {
                 throw new ArgumentNullException (nameof (plot));
